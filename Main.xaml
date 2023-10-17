@@ -110,9 +110,9 @@
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="ComparaisonCommandesStock.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="388,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="ComparaisonCommandesStock.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_listCommande">
-          <VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="dt_listCommande" />
-        </InArgument>
+        <InOutArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_listCommande">
+          <VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="dt_listCommande" />
+        </InOutArgument>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_listStock">
           <VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="dt_listStockDispo" />
         </InArgument>
@@ -125,6 +125,9 @@
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_stockNeed">
           <VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="dt_restockItemNeed" />
+        </InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_dt_listCommande">
+          <VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="dt_listCommande" />
         </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
