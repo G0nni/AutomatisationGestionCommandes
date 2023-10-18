@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MailManagement" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:um="clr-namespace:UiPath.Mail;assembly=UiPath.Mail.Activities" xmlns:umab="clr-namespace:UiPath.Mail.Activities.Business;assembly=UiPath.Mail.Activities" xmlns:umabh="clr-namespace:UiPath.Mail.Activities.Business.HtmlEditor;assembly=UiPath.Mail.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MailManagement" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_dt_stockNeed" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_dt_listCommande" Type="InArgument(sd:DataTable)" />
@@ -6,7 +6,7 @@
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>700,1826</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>607,1724</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MailManagement_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -51,6 +51,20 @@
       <x:String>UiPath.Shared.Activities.ConnectionService.Contracts</x:String>
       <x:String>UiPath.Mail.Activities.Utils</x:String>
       <x:String>UiPath.Mail.Activities.Business.HtmlEditor</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Model</x:String>
+      <x:String>UiPath.Excel.Activities.Business</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Files.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Files.Models</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Excel.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Enums</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Excel.Models</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Excel</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities.Contracts</x:String>
+      <x:String>UiPath.MicrosoftOffice365.Activities</x:String>
+      <x:String>UiPath.Activities.Contracts</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -112,20 +126,29 @@
       <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
       <AssemblyReference>UiPath.GSuite.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>System.Runtime.InteropServices</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.MicrosoftOffice365</AssemblyReference>
+      <AssemblyReference>UiPath.Activities.Contracts</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="MailManagement" sap:VirtualizedContainerService.HintSize="617,1761" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="MailManagement" sap:VirtualizedContainerService.HintSize="617,1659" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="recapMessageMail" />
       <Variable x:TypeArguments="x:String" Name="stringListCommande" />
       <Variable x:TypeArguments="x:String" Name="stringListRestock" />
+      <Variable x:TypeArguments="x:String" Name="passwordGmail" />
+      <Variable x:TypeArguments="x:String" Name="passwordSMTP" />
+      <Variable x:TypeArguments="x:String" Name="htmlHeader" />
+      <Variable x:TypeArguments="x:String" Name="htmlFooter" />
+      <Variable x:TypeArguments="x:String" Name="middleHtml" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign sap:VirtualizedContainerService.HintSize="555,82" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign sap:VirtualizedContainerService.HintSize="555,83" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[recapMessageMail]</OutArgument>
       </Assign.To>
@@ -135,91 +158,212 @@
         </InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[in_dt_listCommande]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="555,452" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <Assign sap:VirtualizedContainerService.HintSize="555,84" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[htmlHeader]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String" xml:space="preserve">["&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+witdh: 100%;
+}
+
+td, th {
+border: 1px solid #ddddd;
+text-align: left;
+padding: 8px;
+}
+
+tr:ntr-child(even) {
+background-color: #ddddd;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h2&gt;Récapitulatif des commandes hebdomadaire&lt;/h2&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;th&gt;Numéro de commande&lt;/th&gt;
+&lt;th&gt;Nom du client&lt;/th&gt;
+&lt;th&gt;Adresse du client&lt;/th&gt;
+&lt;th&gt;Produit commandé&lt;/th&gt;
+&lt;th&gt;Quantité commandé&lt;/th&gt;
+&lt;th&gt;Prix unitaire&lt;/th&gt;
+&lt;th&gt;Montant total&lt;/th&gt;
+&lt;th&gt;Statut&lt;/th&gt;
+&lt;th&gt;Date de la commande&lt;/th&gt;
+&lt;th&gt;Date d'expédition prévue&lt;/th&gt;
+&lt;/tr&gt;
+"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="555,83" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[middleHtml]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <Literal x:TypeArguments="x:String" Value="" />
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="555,84" sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[htmlFooter]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String" xml:space="preserve">["&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[in_dt_listCommande]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="555,796" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentRow" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="521,266" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="521,608" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="numeroCommande" />
+              <Variable x:TypeArguments="x:String" Name="RowNumCommande" />
+              <Variable x:TypeArguments="x:String" Name="RowNomClient" />
+              <Variable x:TypeArguments="x:String" Name="RowAdresseClient" />
+              <Variable x:TypeArguments="x:String" Name="Row" />
+              <Variable x:TypeArguments="x:String" Name="RowProduitCommande" />
+              <Variable x:TypeArguments="x:String" Name="QuantiteCommande" />
+              <Variable x:TypeArguments="x:String" Name="RowQuantiteCommande" />
+              <Variable x:TypeArguments="x:String" Name="RowPrixUnit" />
+              <Variable x:TypeArguments="x:String" Name="RowMontantTotal" />
+              <Variable x:TypeArguments="x:String" Name="RowStatut" />
+              <Variable x:TypeArguments="x:String" Name="RowDateCommande" />
+              <Variable x:TypeArguments="x:String" Name="RowDateExpedition" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="479,178" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="479,396" sap2010:WorkflowViewState.IdRef="MultipleAssign_2">
               <ui:MultipleAssign.AssignOperations>
-                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="16">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:String">[recapMessageMail]</OutArgument>
+                      <OutArgument x:TypeArguments="x:String">[RowNumCommande]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[recapMessageMail + "Numéro de commande : " + CurrentRow.Item(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(0).ToString]</InArgument>
                     </ui:AssignOperation.Value>
                   </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_5">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:String">[recapMessageMail]</OutArgument>
+                      <OutArgument x:TypeArguments="x:String">[RowNomClient]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[recapMessageMail + "nom du client : " + CurrentRow.Item(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(1).ToString]</InArgument>
                     </ui:AssignOperation.Value>
                   </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_6">
                     <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:String">[recapMessageMail]</OutArgument>
+                      <OutArgument x:TypeArguments="x:String">[RowAdresseClient]</OutArgument>
                     </ui:AssignOperation.To>
                     <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[recapMessageMail + "Produit commandé : " + CurrentRow.Item(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(2).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_7">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowProduitCommande]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(3).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_8">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowQuantiteCommande]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(4).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_9">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowPrixUnit]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(5).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_10">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowMontantTotal]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(6).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_11">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowStatut]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(7).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_12">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowDateCommande]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(8).ToString]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_13">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[RowDateExpedition]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentRow.Item(9).ToString]</InArgument>
                     </ui:AssignOperation.Value>
                   </ui:AssignOperation>
                 </scg:List>
               </ui:MultipleAssign.AssignOperations>
             </ui:MultipleAssign>
+            <Assign sap:VirtualizedContainerService.HintSize="479,84" sap2010:WorkflowViewState.IdRef="Assign_6">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[middleHtml]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String" xml:space="preserve">[middleHtml+"&lt;tr&gt;
+&lt;td&gt;"+RowNumCommande+"&lt;/td&gt;
+&lt;td&gt;"+RowNomClient+"&lt;/td&gt;
+&lt;td&gt;"+RowAdresseClient+"&lt;/td&gt;
+&lt;td&gt;"+RowProduitCommande+"&lt;/td&gt;
+&lt;td&gt;"+RowQuantiteCommande+"&lt;/td&gt;
+&lt;td&gt;"+RowPrixUnit+"&lt;/td&gt;
+&lt;td&gt;"+RowMontantTotal+"&lt;/td&gt;
+&lt;td&gt;"+RowStatut+"&lt;/td&gt;
+&lt;td&gt;"+RowDateCommande+"&lt;/td&gt;
+&lt;td&gt;"+RowDateExpedition+"&lt;/td&gt;
+&lt;/tr&gt;"]</InArgument>
+              </Assign.Value>
+            </Assign>
           </Sequence>
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>
-    <ui:OutputDataTable DataTable="[in_dt_listCommande]" DisplayName="Output Data Table" sap:VirtualizedContainerService.HintSize="555,80" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" Text="[stringListCommande]" />
-    <ui:OutputDataTable DataTable="[in_dt_stockNeed]" DisplayName="Output Data Table" sap:VirtualizedContainerService.HintSize="555,80" sap2010:WorkflowViewState.IdRef="OutputDataTable_2" Text="[stringListRestock]" />
-    <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="555,85" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[stringListCommande + &quot;\n \n&quot; + stringListRestock]" />
-    <umab:OutlookApplicationCard Account="logiciels@2irs.com" AccountMismatchBehavior="UseDefaultEmailAccount" DisplayName="Use Desktop Outlook App" sap:VirtualizedContainerService.HintSize="555,671" sap2010:WorkflowViewState.IdRef="OutlookApplicationCard_1">
-      <umab:OutlookApplicationCard.Body>
-        <ActivityAction x:TypeArguments="um:IMailQuickHandle">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="um:IMailQuickHandle" Name="Outlook" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="496,491" sap2010:WorkflowViewState.IdRef="Sequence_3">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <umab:SendMailX Bcc="{x:Null}" Cc="{x:Null}" HtmlBodyFromText="{x:Null}" ReplyTo="{x:Null}" Account="[Outlook]" Body="[&quot;email test&quot; + stringListCommande + &quot;&quot;]" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="434,380" sap2010:WorkflowViewState.IdRef="SendMailX_1" Importance="Normal" MaxBodyDocumentSizeMB="2" Sensitivity="Normal" Subject="Récapitulatif hebdomadaire des commandes et stocks" To="nicolas.cros@estiam.com" UseDocumentAsBody="False">
-              <umab:SendMailX.Files>
-                <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
-              </umab:SendMailX.Files>
-              <umab:SendMailX.HtmlBodyFromFile>
-                <umabh:HtmlContentArgument FilePath=".data/HtmlContent0.html">
-                  <umabh:HtmlContentArgument.RuntimeImages>
-                    <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
-                  </umabh:HtmlContentArgument.RuntimeImages>
-                  <umabh:HtmlContentArgument.ValueMappings>
-                    <scg:List x:TypeArguments="umabh:HtmlValueMappingBase" Capacity="4">
-                      <umabh:HtmlTableValueMapping Name="TableListcommande" Value="[in_dt_listCommande]" />
-                      <umabh:HtmlTableValueMapping Name="TableRestock" Value="[in_dt_stockNeed]" />
-                    </scg:List>
-                  </umabh:HtmlContentArgument.ValueMappings>
-                </umabh:HtmlContentArgument>
-              </umab:SendMailX.HtmlBodyFromFile>
-            </umab:SendMailX>
-          </Sequence>
-        </ActivityAction>
-      </umab:OutlookApplicationCard.Body>
-    </umab:OutlookApplicationCard>
+    <ui:GetPassword DisplayName="Private: Get Password" sap:VirtualizedContainerService.HintSize="555,25" sap2010:WorkflowViewState.IdRef="GetPassword_1" ProtectedPassword="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAt4Bc1jlNuki1ZrXU4NOVZQAAAAACAAAAAAAQZgAAAAEAACAAAACqRa3HYpblh/eySCQbWqrmHwe73PFDJsiaoWDhoyIyPwAAAAAOgAAAAAIAACAAAACE+9PX5/h2qEz8obgRS9RF75sigSeND49cyEh3c2uoBCAAAABmgVjbgJ2lRYVdpWoTISoL2t+HcVudqsoqMKJgaOl65EAAAACxoGrYb5Bu36dcd8FoFJztM8//TcJdTC2AZ0a/bt4kKV25n+79k/0Z/tUHsWLQEJ9tDGNk5y4X5qtXynt4s4ci" Result="[passwordSMTP]" />
+    <ui:SendMail Bcc="{x:Null}" Cc="{x:Null}" ContinueOnError="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" ReplyTo="{x:Null}" Result="{x:Null}" SecurePassword="{x:Null}" TimeoutMS="{x:Null}" UseOAuth="{x:Null}" Body="[htmlHeader + middleHtml + htmlFooter]" DisplayName="Send SMTP Mail Message" Email="Gonadie65@gmail.com" EnableSSL="True" sap:VirtualizedContainerService.HintSize="555,153" sap2010:WorkflowViewState.IdRef="SendMail_2" IgnoreCRL="False" IsBodyHtml="True" Password="[passwordSMTP]" Port="465" SecureConnection="Auto" Server="smtp.gmail.com" Subject="Récapitulatif hebdomadaire de commande" To="nicolas.cros@estiam.com">
+      <ui:SendMail.Files>
+        <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+      </ui:SendMail.Files>
+    </ui:SendMail>
   </Sequence>
 </Activity>
